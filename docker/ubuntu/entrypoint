@@ -57,7 +57,7 @@ function print_usage_port {
   echo
 }
 
-OPTIONS=`getopt -o s:p:k:m:t:c:uvh --long server:,key:,password:,encrypt-method:,timeout:,acl:,server-port:,config-file:,fast-open,help -n "$IMAGE_NAME" -- "$@"`
+OPTIONS=`getopt -o s:p:k:m:t:c:uvha --long server:,key:,password:,encrypt-method:,timeout:,acl:,server-port:,config-file:,fast-open,help,OTA -n "$IMAGE_NAME" -- "$@"`
 if [ $? -ne 0 ]; then
   print_usage
   exit 1
@@ -72,6 +72,7 @@ while true; do
     --acl)                    ACL="--acl $2";           shift 2;;
     --fast-open)              FAST_OPEN="--fast-open";  shift;;
     -u)                       UDP_RELAY="-u";           shift;;
+    -A)                       OTA="-A";                 shift;;
     -v)                       VERBOSE="-v";             shift;;
     --)                                                 shift; break;;
 
@@ -96,4 +97,4 @@ fi
 echo "Launching Shadowsocks server..."
 echo "To watch the output, run"
 echo "  docker ps -ql | xargs docker logs -f"
-$SHADOWSOCKS $HOST $PORT $PASSWORD $ENCRYPTION $TIMEOUT $UDP_RELAY $VERBOSE $FAST_OPEN $ACL $JSON
+$SHADOWSOCKS $HOST $PORT $PASSWORD $ENCRYPTION $TIMEOUT $UDP_RELAY $OTA $VERBOSE $FAST_OPEN $ACL $JSON
